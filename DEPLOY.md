@@ -4,11 +4,11 @@
 
 1. Install dependencies:
 ```bash
-npm install --save-dev hardhat-deploy @nomicfoundation/hardhat-toolbox
+npm install --save-dev hardhat-deploy @nomicfoundation/hardhat-toolbox dotenv
 ```
 
 2. Set up environment variables in `.env`:
-```
+```env
 BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
 PRIVATE_KEY=your_private_key_here
 ```
@@ -25,14 +25,15 @@ npx hardhat compile
 
 2. Deploy to Base Sepolia:
 ```bash
-npx hardhat deploy --network base_sepolia --tags DeployAll
+npx hardhat deploy --network baseSepolia --tags DeployAll
 ```
 
 3. Copy the deployed contract address from the output
 
 4. Add to `.env.local`:
-```
-NEXT_PUBLIC_CHECK_IN_CONTRACT_ADDRESS=0x...
+```env
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
+NEXT_PUBLIC_CHECK_IN_CONTRACT_ADDRESS=0x68a298f481353864Fc3bD2C8fbf1027D509B321D
 ```
 
 5. Restart the Next.js dev server:
@@ -47,7 +48,12 @@ npm run dev
 - **Best Month Streak**: Records the best streak ever achieved
 - **Total Check-ins**: Counts all check-ins
 
-## Contract Address
+## Current Deployment
 
-After deployment, the contract address will be displayed in the terminal. Add it to your `.env.local` file for the frontend to connect.
+- **Address**: `0x68a298f481353864Fc3bD2C8fbf1027D509B321D`
+- **Network**: Base Sepolia (Chain ID: 84532)
+- **Gas Used**: 536,146
 
+## Project Structure
+
+See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for detailed information about the codebase organization.

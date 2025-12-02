@@ -20,6 +20,8 @@ export function CheckInCard() {
     checkIn,
     error,
     isSuccess,
+    isOnCorrectNetwork,
+    switchToBaseSepolia,
   } = useOnchainCheckIn(address);
 
   const lastCheckIn = lastCheckInTimestamp
@@ -60,11 +62,28 @@ export function CheckInCard() {
                   </div>
                 </div>
               )}
+              {!isOnCorrectNetwork && (
+                <div className="mt-4 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
+                  <p className="mb-2 text-sm font-medium text-yellow-400">
+                    ⚠️ Wrong Network
+                  </p>
+                  <p className="mb-3 text-xs text-yellow-300/80">
+                    Please switch to Base Sepolia to use check-in feature. Your
+                    data is stored on Base Sepolia testnet.
+                  </p>
+                  <button
+                    onClick={switchToBaseSepolia}
+                    className="rounded-full bg-yellow-500/20 px-4 py-2 text-xs font-medium text-yellow-300 transition hover:bg-yellow-500/30"
+                  >
+                    Switch to Base Sepolia
+                  </button>
+                </div>
+              )}
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <CheckInButton
                   onCheckIn={checkIn}
                   isCheckedIn={checkedInToday}
-                  disabled={isWriting || isLoading}
+                  disabled={isWriting || isLoading || !isOnCorrectNetwork}
                 />
               </div>
               {error && (
@@ -74,13 +93,9 @@ export function CheckInCard() {
               )}
               {isSuccess && (
                 <p className="mt-2 text-xs text-green-400">
-                  ✓ Check-in successful! Transaction confirmed on Base.
+                  ✓ Check-in successful! Transaction confirmed on Base Sepolia.
                 </p>
               )}
-              <p className="mt-3 text-xs text-slate-500">
-                Check-ins are stored onchain on Base Sepolia. Your streak and
-                total count are permanently recorded on the blockchain.
-              </p>
             </>
           )}
         </>
