@@ -27,7 +27,7 @@ export function CheckInCard() {
       ) : (
         <>
           <h2 className="mb-4 text-lg font-semibold text-white sm:text-xl">
-            Daily Check-in
+            Daily BM
           </h2>
           {address && (
             <>

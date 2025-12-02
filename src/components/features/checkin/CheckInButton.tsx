@@ -19,7 +19,7 @@ export function CheckInButton({
       disabled={disabled || isCheckedIn}
       variant="primary"
     >
-      {isCheckedIn ? "Checked in for today" : "Check in for today"}
+      {isCheckedIn ? "You are based" : "Say BM"}
     </LiquidGlassButton>
   );
 }
