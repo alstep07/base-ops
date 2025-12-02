@@ -11,3 +11,11 @@ body {
   background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
   color: #e5e7eb;
 }
+
+/* Hide network switcher in RainbowKit modal */
+[data-rk] button[data-testid="rk-chain-button"],
+[data-rk] [data-rk-chain-button],
+[data-rk] button[aria-label*="chain"],
+[data-rk] button[aria-label*="network"] {
+  display: none !important;
+}

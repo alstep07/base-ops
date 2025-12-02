@@ -13,20 +13,12 @@ export function BalanceDisplay() {
     },
   });
 
-  if (!isConnected || !address) return null;
-
-  if (isLoading) {
-    return (
-      <span className="text-xs text-slate-400 sm:text-sm">
-        Balance: loading…
-      </span>
-    );
-  }
+  if (!isConnected || !address || isLoading) return null;
 
   if (isError || !data) {
     return (
       <span className="text-xs text-slate-400 sm:text-sm">
-        Balance: 0.0000 ETH
+        0.0000 ETH
       </span>
     );
   }
@@ -38,7 +30,7 @@ export function BalanceDisplay() {
 
   return (
     <span className="text-xs text-slate-200 sm:text-sm">
-      Balance: {formattedBalance} {data.symbol}
+      {formattedBalance} {data.symbol}
     </span>
   );
 }
