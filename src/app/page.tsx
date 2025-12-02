@@ -3,6 +3,7 @@
 import { useAccount } from "wagmi";
 import { CheckInCard } from "@/components/features/checkin/CheckInCard";
 import { WalletHeader } from "@/components/features/wallet/WalletHeader";
+import { WalletConnectPrompt } from "@/components/features/wallet/WalletConnectPrompt";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { BubbleAnimation } from "@/components/ui/BubbleAnimation";
 
@@ -20,9 +21,7 @@ export default function Home() {
         />
         <section className="flex flex-1 items-center justify-center pb-10">
           {!isConnected ? (
-            <p className="text-center text-lg text-slate-400">
-              Please connect your wallet
-            </p>
+            <WalletConnectPrompt />
           ) : (
             <CheckInCard />
           )}

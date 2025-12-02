@@ -50,19 +50,17 @@ export function useOnchainCheckIn(address?: string) {
   }) as { data: UserInfo | undefined; isLoading: boolean; refetch: () => void };
 
   // Check if checked in today - only on correct network
-  const {
-    data: checkedInToday,
-    refetch: refetchCheckedInToday,
-  } = useReadContract({
-    address: contractAddress,
-    abi: dailyCheckInAbi,
-    functionName: "hasCheckedInToday",
-    args: userAddress ? [userAddress] : undefined,
-    chainId: DEFAULT_CHAIN_ID,
-    query: {
-      enabled: !!userAddress && !!contractAddress && isOnCorrectNetwork,
-    },
-  }) as { data: boolean | undefined; refetch: () => void };
+  const { data: checkedInToday, refetch: refetchCheckedInToday } =
+    useReadContract({
+      address: contractAddress,
+      abi: dailyCheckInAbi,
+      functionName: "hasCheckedInToday",
+      args: userAddress ? [userAddress] : undefined,
+      chainId: DEFAULT_CHAIN_ID,
+      query: {
+        enabled: !!userAddress && !!contractAddress && isOnCorrectNetwork,
+      },
+    }) as { data: boolean | undefined; refetch: () => void };
 
   // Write check-in
   const {
