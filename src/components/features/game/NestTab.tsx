@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
+import Image from "next/image";
 import { useEggs, type EggWithInfo } from "@/hooks/useEggs";
 import { useFryReef } from "@/hooks/useFryReef";
-import { INCUBATION, Rarity } from "@/constants/gameConfig";
+import { INCUBATION, Rarity, EGG_IMAGE } from "@/constants/gameConfig";
 import { HatchModal } from "./HatchModal";
 import { fishNftAbi, FISH_NFT_ADDRESS, FishRarity } from "@/contracts/fishNft";
 import { baseSepolia } from "wagmi/chains";
@@ -90,9 +91,15 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
           <div className="absolute inset-0 rounded-full bg-baseBlue/10 blur-lg" />
         )}
 
-        {/* Egg icon */}
-        <div className={`relative flex h-full w-full items-center justify-center text-5xl ${!info.isIncubating ? "animate-float" : ""}`}>
-          🟠
+        {/* Egg image */}
+        <div className={`relative flex h-full w-full items-center justify-center ${!info.isIncubating ? "animate-float" : ""}`}>
+          <Image
+            src={EGG_IMAGE}
+            alt="Egg"
+            width={64}
+            height={64}
+            className="object-contain"
+          />
         </div>
 
         {/* Progress ring for incubating eggs */}
@@ -144,7 +151,7 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
             disabled={isLoading}
             className="mt-2 w-full cursor-pointer rounded-lg bg-green-500 px-3 py-2 text-xs font-medium text-white transition hover:bg-green-400 disabled:cursor-not-allowed disabled:bg-slate-600"
           >
-            {isLoading ? "..." : "🐣 Hatch"}
+            {isLoading ? "..." : "Hatch"}
           </button>
         ) : (
           <div className="mt-2">
@@ -201,21 +208,18 @@ export function NestTab({ onGoToReef }: NestTabProps) {
   // Track fish count before hatch
   const [fishCountBefore, setFishCountBefore] = useState<number | null>(null);
 
-  // After successful transaction, check for new fish
+  // After successful transaction, refetch all data
   useEffect(() => {
-    if (isSuccess && pendingHatch) {
-      const timer = setTimeout(async () => {
-        await refetchFish();
-        refetch();
-      }, 2000);
-      return () => clearTimeout(timer);
-    } else if (isSuccess) {
-      const timer = setTimeout(() => {
-        refetch();
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isSuccess, pendingHatch, refetch, refetchFish]);
+    if (!isSuccess) return;
+
+    const timer = setTimeout(() => {
+      // Always refetch both - safe to call even if not needed
+      refetchFish();
+      refetch();
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [isSuccess, refetch, refetchFish]);
 
   // Detect new fish after hatch
   useEffect(() => {
@@ -227,9 +231,11 @@ export function NestTab({ onGoToReef }: NestTabProps) {
         setHatchedFishId(newFishId);
         setPendingHatch(false);
         setFishCountBefore(null);
+        // Refetch immediately when fish detected
+        refetch();
       }
     }
-  }, [fishIds, pendingHatch, fishCountBefore]);
+  }, [fishIds, pendingHatch, fishCountBefore, refetch]);
 
   // Get fish info when we have a new fish ID
   const { data: fishInfo } = useReadContract({
@@ -296,7 +302,15 @@ export function NestTab({ onGoToReef }: NestTabProps) {
 
         {eggCount === 0 ? (
           <div className="py-8 text-center">
-            <div className="mb-4 text-5xl">🟠</div>
+            <div className="mb-4 flex justify-center">
+              <Image
+                src={EGG_IMAGE}
+                alt="Egg"
+                width={180}
+                height={180}
+                className="object-contain opacity-50"
+              />
+            </div>
             <h3 className="mb-2 text-base font-medium text-white">No Eggs Yet</h3>
             <p className="text-sm text-slate-400">
               Claim your starter pack or breed fish to get eggs!
