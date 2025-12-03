@@ -15,30 +15,44 @@ import { base, baseSepolia } from "wagmi/chains";
 const projectId =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "YOUR_WALLETCONNECT_PROJECT_ID";
 
-// Create config once outside of component
-const config = getDefaultConfig({
-  appName: "FryReef",
-  projectId,
-  chains: [base, baseSepolia],
-  ssr: true,
-});
+// Singleton pattern to prevent multiple WalletConnect Core initializations
+let config: ReturnType<typeof getDefaultConfig> | null = null;
 
-// Create QueryClient once outside of component
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000, // 1 minute
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+function getConfig() {
+  if (!config) {
+    config = getDefaultConfig({
+      appName: "FryReef",
+      projectId,
+      chains: [base, baseSepolia],
+      ssr: true,
+    });
+  }
+  return config;
+}
 
-export const wagmiConfig = config;
+// Singleton QueryClient
+let queryClient: QueryClient | null = null;
+
+function getQueryClient() {
+  if (!queryClient) {
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          staleTime: 60 * 1000, // 1 minute
+          refetchOnWindowFocus: false,
+        },
+      },
+    });
+  }
+  return queryClient;
+}
+
+export const wagmiConfig = getConfig();
 
 export function Web3Providers({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
+    <WagmiProvider config={getConfig()}>
+      <QueryClientProvider client={getQueryClient()}>
         <RainbowKitProvider
           modalSize="compact"
           initialChain={baseSepolia}

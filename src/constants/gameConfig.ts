@@ -59,46 +59,17 @@ export const RARITY_CONFIG = {
  * Fish images by rarity
  */
 export const FISH_IMAGES = {
-  [Rarity.Common]: "/images/fish/common.png",
-  [Rarity.Rare]: "/images/fish/rare.png",
-  [Rarity.Epic]: "/images/fish/epic.png",
-  [Rarity.Legendary]: "/images/fish/legendary.png",
-  [Rarity.Mythic]: "/images/fish/mythic.png",
+  [Rarity.Common]: "/images/fish/common.webp",
+  [Rarity.Rare]: "/images/fish/rare.webp",
+  [Rarity.Epic]: "/images/fish/epic.webp",
+  [Rarity.Legendary]: "/images/fish/legendary.webp",
+  [Rarity.Mythic]: "/images/fish/mythic.webp",
 } as const;
 
 /**
- * Egg incubation stages
+ * Egg image path
  */
-export enum EggStage {
-  Stage1 = 1, // Small egg, empty
-  Stage2 = 2, // Medium egg, dark dot inside
-  Stage3 = 3, // Large egg, fish silhouette inside
-}
-
-/**
- * Egg images by incubation stage
- */
-export const EGG_IMAGES = {
-  [EggStage.Stage1]: "/images/egg/stage1.png",
-  [EggStage.Stage2]: "/images/egg/stage2.png",
-  [EggStage.Stage3]: "/images/egg/stage3.png",
-} as const;
-
-/**
- * Get egg stage based on incubation progress (0-100%)
- */
-export function getEggStage(progress: number): EggStage {
-  if (progress < 33) return EggStage.Stage1;
-  if (progress < 66) return EggStage.Stage2;
-  return EggStage.Stage3;
-}
-
-/**
- * Get egg image based on incubation progress
- */
-export function getEggImage(progress: number): string {
-  return EGG_IMAGES[getEggStage(progress)];
-}
+export const EGG_IMAGE = "/images/egg/egg.webp";
 
 /**
  * Get fish image by rarity
