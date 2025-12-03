@@ -33,7 +33,7 @@ export function WalletHeader() {
           {/* ETH Balance */}
           <div className="flex items-center gap-1.5">
             <span className="text-sm">⟠</span>
-            <span className="text-sm font-medium text-white tabular-nums">
+            <span className="font-[family-name:var(--font-geist-mono)] text-sm font-medium text-white tabular-nums">
               {isBalanceLoading ? "-.--" : ethBalance}
             </span>
           </div>
@@ -44,11 +44,11 @@ export function WalletHeader() {
               <div className="h-4 w-px bg-white/20" />
               <div className="flex items-center gap-1.5">
                 <span className="text-sm">{RESOURCE_CONFIG[Resource.PearlShard].icon}</span>
-                <span className="text-sm font-medium text-white tabular-nums">{pearlShards}</span>
+                <span className="font-[family-name:var(--font-geist-mono)] text-sm font-medium text-white tabular-nums">{pearlShards}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="text-sm">{RESOURCE_CONFIG[Resource.SpawnDust].icon}</span>
-                <span className="text-sm font-medium text-white tabular-nums">{spawnDust}</span>
+                <span className="font-[family-name:var(--font-geist-mono)] text-sm font-medium text-white tabular-nums">{spawnDust}</span>
               </div>
             </>
           )}

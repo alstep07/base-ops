@@ -6,7 +6,7 @@ export function WalletConnectPrompt() {
   return (
     <div className="flex flex-col items-center">
       <Image
-        src="/images/fish.webp"
+        src="/images/fish/common.webp"
         alt="Connect wallet"
         width={200}
         height={200}

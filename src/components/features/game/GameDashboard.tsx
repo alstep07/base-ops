@@ -142,7 +142,7 @@ export function GameDashboard() {
                 ? "✓ Checked in today"
                 : isWriting || isLoading
                   ? "Checking in..."
-                  : "Say BM"}
+                  : "Check-in"}
             </button>
           </div>
 
@@ -151,16 +151,10 @@ export function GameDashboard() {
               Transaction failed. Please try again.
             </p>
           )}
-
-          {isSuccess && !checkedInToday && (
-            <p className="mt-3 text-center text-xs text-green-400">
-              ✓ Check-in successful!
-            </p>
-          )}
         </div>
       )}
 
-      {activeTab === "nest" && <NestTab />}
+      {activeTab === "nest" && <NestTab onGoToReef={() => setActiveTab("reef")} />}
 
       {activeTab === "reef" && (
         <div className="rounded-2xl border border-white/5 bg-white/5 p-8 text-center backdrop-blur-sm">

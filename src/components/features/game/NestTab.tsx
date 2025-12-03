@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAccount, useReadContract } from "wagmi";
 import { useEggs, type EggWithInfo } from "@/hooks/useEggs";
 import { useFryReef } from "@/hooks/useFryReef";
-import { INCUBATION } from "@/constants/gameConfig";
+import { INCUBATION, Rarity } from "@/constants/gameConfig";
+import { HatchModal } from "./HatchModal";
+import { fishNftAbi, FISH_NFT_ADDRESS, FishRarity } from "@/contracts/fishNft";
+import { baseSepolia } from "wagmi/chains";
 
 interface EggCardProps {
   egg: EggWithInfo;
@@ -14,45 +18,45 @@ interface EggCardProps {
 }
 
 function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardProps) {
-  const { tokenId, info, canHatch, timeUntilHatch } = egg;
+  const { tokenId, info, canHatch } = egg;
 
-  // Calculate progress based on incubation time
-  const getProgress = () => {
-    if (!info.isIncubating) return 0;
+  // Calculate time remaining and progress
+  const calculateTimeAndProgress = () => {
+    if (!info.isIncubating) return { timeLeft: 0, progress: 0 };
     const elapsed = Date.now() / 1000 - Number(info.incubationStartedAt);
     const total = INCUBATION.durationSeconds;
-    return Math.min(100, (elapsed / total) * 100);
+    const timeLeft = Math.max(0, total - elapsed);
+    const progress = Math.min(100, (elapsed / total) * 100);
+    return { timeLeft, progress };
   };
 
-  const [progress, setProgress] = useState(() => getProgress());
+  const [{ timeLeft, progress }, setTimeData] = useState(() => calculateTimeAndProgress());
 
-  // Update progress periodically
+  // Update every second when incubating
   useEffect(() => {
     if (!info.isIncubating) {
-      setProgress(0);
+      setTimeData({ timeLeft: 0, progress: 0 });
       return;
     }
 
-    // Recalculate on mount/change
-    setProgress(getProgress());
+    // Initial calculation
+    setTimeData(calculateTimeAndProgress());
 
     const interval = setInterval(() => {
-      const elapsed = Date.now() / 1000 - Number(info.incubationStartedAt);
-      const total = INCUBATION.durationSeconds;
-      setProgress(Math.min(100, (elapsed / total) * 100));
-    }, 60000);
+      setTimeData(calculateTimeAndProgress());
+    }, 1000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [info.isIncubating, info.incubationStartedAt]);
 
-  // Format time remaining
   const formatTime = (seconds: number) => {
-    if (seconds <= 0) return "Ready!";
+    if (seconds <= 0) return "00h 00m 00s";
     const hours = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
-    if (hours > 0) return `${hours}h ${mins}m`;
-    return `${mins}m`;
+    const secs = Math.floor(seconds % 60);
+
+    return `${String(hours).padStart(2, "0")}h ${String(mins).padStart(2, "0")}m ${String(secs).padStart(2, "0")}s`;
   };
 
   // Status styling
@@ -87,7 +91,7 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
         )}
 
         {/* Egg icon */}
-        <div className="relative flex h-full w-full items-center justify-center text-5xl">
+        <div className={`relative flex h-full w-full items-center justify-center text-5xl ${!info.isIncubating ? "animate-float" : ""}`}>
           🟠
         </div>
 
@@ -144,7 +148,7 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
           </button>
         ) : (
           <div className="mt-2">
-            <p className="text-xs tabular-nums text-slate-300">{formatTime(timeUntilHatch)}</p>
+            <p className="text-xs tabular-nums text-slate-300">{formatTime(timeLeft)}</p>
             <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-white/10">
               <div
                 className="h-full bg-baseBlue transition-all"
@@ -158,62 +162,162 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
   );
 }
 
-export function NestTab() {
+// Map contract rarity (number) to our Rarity enum (string)
+const rarityMap: Record<number, Rarity> = {
+  [FishRarity.Common]: Rarity.Common,
+  [FishRarity.Rare]: Rarity.Rare,
+  [FishRarity.Epic]: Rarity.Epic,
+  [FishRarity.Legendary]: Rarity.Legendary,
+  [FishRarity.Mythic]: Rarity.Mythic,
+};
+
+interface NestTabProps {
+  onGoToReef?: () => void;
+}
+
+export function NestTab({ onGoToReef }: NestTabProps) {
+  const { address } = useAccount();
   const { eggs, eggCount, refetch } = useEggs();
   const { pearlShards, isWriting, isSuccess, startIncubation, hatchEgg } = useFryReef();
 
-  // Refetch eggs after successful transaction
+  // Modal state
+  const [showHatchModal, setShowHatchModal] = useState(false);
+  const [hatchedFishId, setHatchedFishId] = useState<number | null>(null);
+  const [hatchedRarity, setHatchedRarity] = useState<Rarity | null>(null);
+  const [pendingHatch, setPendingHatch] = useState(false);
+
+  // Get user's fish to detect new ones
+  const { data: fishIds, refetch: refetchFish } = useReadContract({
+    address: FISH_NFT_ADDRESS as `0x${string}`,
+    abi: fishNftAbi,
+    functionName: "getFishByOwner",
+    args: address ? [address] : undefined,
+    chainId: baseSepolia.id,
+    query: {
+      enabled: !!address && !!FISH_NFT_ADDRESS,
+    },
+  });
+
+  // Track fish count before hatch
+  const [fishCountBefore, setFishCountBefore] = useState<number | null>(null);
+
+  // After successful transaction, check for new fish
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && pendingHatch) {
+      const timer = setTimeout(async () => {
+        await refetchFish();
+        refetch();
+      }, 2000);
+      return () => clearTimeout(timer);
+    } else if (isSuccess) {
       const timer = setTimeout(() => {
         refetch();
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess, refetch]);
+  }, [isSuccess, pendingHatch, refetch, refetchFish]);
+
+  // Detect new fish after hatch
+  useEffect(() => {
+    if (pendingHatch && fishIds && fishCountBefore !== null) {
+      const currentCount = (fishIds as bigint[]).length;
+      if (currentCount > fishCountBefore) {
+        // New fish hatched!
+        const newFishId = Number((fishIds as bigint[])[currentCount - 1]);
+        setHatchedFishId(newFishId);
+        setPendingHatch(false);
+        setFishCountBefore(null);
+      }
+    }
+  }, [fishIds, pendingHatch, fishCountBefore]);
+
+  // Get fish info when we have a new fish ID
+  const { data: fishInfo } = useReadContract({
+    address: FISH_NFT_ADDRESS as `0x${string}`,
+    abi: fishNftAbi,
+    functionName: "getFishInfo",
+    args: hatchedFishId !== null ? [BigInt(hatchedFishId)] : undefined,
+    chainId: baseSepolia.id,
+    query: {
+      enabled: hatchedFishId !== null,
+    },
+  });
+
+  // Show modal when we have fish info
+  useEffect(() => {
+    if (fishInfo && hatchedFishId !== null) {
+      const info = fishInfo as { rarity: number };
+      setHatchedRarity(rarityMap[info.rarity] || Rarity.Common);
+      setShowHatchModal(true);
+    }
+  }, [fishInfo, hatchedFishId]);
 
   const handleIncubate = async (tokenId: number) => {
     await startIncubation(tokenId);
   };
 
   const handleHatch = async (tokenId: number) => {
+    // Store current fish count before hatch
+    const currentCount = fishIds ? (fishIds as bigint[]).length : 0;
+    setFishCountBefore(currentCount);
+    setPendingHatch(true);
     await hatchEgg(tokenId);
   };
 
+  const handleCloseModal = () => {
+    setShowHatchModal(false);
+    setHatchedFishId(null);
+    setHatchedRarity(null);
+  };
+
+  const handleGoToReef = () => {
+    handleCloseModal();
+    onGoToReef?.();
+  };
+
   return (
-    <div className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white">Nest</h2>
-        {eggCount > 0 && (
-          <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-slate-300">
-            {eggCount} {eggCount === 1 ? "egg" : "eggs"}
-          </span>
+    <>
+      <HatchModal
+        isOpen={showHatchModal}
+        rarity={hatchedRarity}
+        fishId={hatchedFishId}
+        onClose={handleCloseModal}
+        onGoToReef={handleGoToReef}
+      />
+      <div className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-white">Nest</h2>
+          {eggCount > 0 && (
+            <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-slate-300">
+              {eggCount} {eggCount === 1 ? "egg" : "eggs"}
+            </span>
+          )}
+        </div>
+
+        {eggCount === 0 ? (
+          <div className="py-8 text-center">
+            <div className="mb-4 text-5xl">🟠</div>
+            <h3 className="mb-2 text-base font-medium text-white">No Eggs Yet</h3>
+            <p className="text-sm text-slate-400">
+              Claim your starter pack or breed fish to get eggs!
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {eggs.map((egg) => (
+              <EggCard
+                key={egg.tokenId}
+                egg={egg}
+                onIncubate={handleIncubate}
+                onHatch={handleHatch}
+                isLoading={isWriting}
+                pearlShards={pearlShards}
+              />
+            ))}
+          </div>
         )}
       </div>
-
-      {eggCount === 0 ? (
-        <div className="py-8 text-center">
-          <div className="mb-4 text-5xl">🟠</div>
-          <h3 className="mb-2 text-base font-medium text-white">No Eggs Yet</h3>
-          <p className="text-sm text-slate-400">
-            Claim your starter pack or breed fish to get eggs!
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {eggs.map((egg) => (
-            <EggCard
-              key={egg.tokenId}
-              egg={egg}
-              onIncubate={handleIncubate}
-              onHatch={handleHatch}
-              isLoading={isWriting}
-              pearlShards={pearlShards}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 
