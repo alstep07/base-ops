@@ -27,13 +27,13 @@ export function WalletHeader() {
 
   return (
     <div className="flex items-center gap-2 sm:gap-3">
-      {/* Combined balance & resources panel */}
+      {/* Combined balance & resources panel - hidden on mobile */}
       {showBalancePanel && (
-        <div className="flex items-center gap-2 sm:gap-3 rounded-xl bg-white/5 px-2.5 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
+        <div className="hidden sm:flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3 backdrop-blur-sm">
           {/* ETH Balance */}
           <div className="flex items-center gap-1">
-            <span className="text-xs sm:text-sm">⟠</span>
-            <span className="font-mono text-xs sm:text-sm font-medium text-white tabular-nums">
+            <span className="text-sm">⟠</span>
+            <span className="font-mono text-sm font-medium text-white tabular-nums">
               {isBalanceLoading ? "-.--" : ethBalance}
             </span>
           </div>
@@ -41,14 +41,14 @@ export function WalletHeader() {
           {/* Divider & Resources - only show after starter pack claimed */}
           {starterPackClaimed && !isLoading && (
             <>
-              <div className="h-3 sm:h-4 w-px bg-white/20" />
+              <div className="h-4 w-px bg-white/20" />
               <div className="flex items-center gap-1">
-                <span className="text-xs sm:text-sm">{RESOURCE_CONFIG[Resource.PearlShard].icon}</span>
-                <span className="font-mono text-xs sm:text-sm font-medium text-white tabular-nums">{pearlShards}</span>
+                <span className="text-sm">{RESOURCE_CONFIG[Resource.PearlShard].icon}</span>
+                <span className="font-mono text-sm font-medium text-white tabular-nums">{pearlShards}</span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="text-xs sm:text-sm">{RESOURCE_CONFIG[Resource.SpawnDust].icon}</span>
-                <span className="font-mono text-xs sm:text-sm font-medium text-white tabular-nums">{spawnDust}</span>
+                <span className="text-sm">{RESOURCE_CONFIG[Resource.SpawnDust].icon}</span>
+                <span className="font-mono text-sm font-medium text-white tabular-nums">{spawnDust}</span>
               </div>
             </>
           )}

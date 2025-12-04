@@ -48,6 +48,21 @@ const faqData: FAQItem[] = [
     answer:
       "FryReef runs on Base Sepolia testnet. Make sure your wallet is connected to this network. The app will prompt you to switch if needed.",
   },
+  {
+    question: "Will there be a token?",
+    answer:
+      "Yes! The $FR token is planned for future release on Base Mainnet. It will be the core currency of the FryReef ecosystem.",
+  },
+  {
+    question: "What will be the $FR token utility?",
+    answer:
+      "The $FR token will be used for premium fish breeding, marketplace transactions, staking rewards, governance voting, and exclusive in-game features.",
+  },
+  {
+    question: "Will there be an airdrop?",
+    answer:
+      "Yes! Early players and active testnet participants will receive $FR token allocation based on their activity, fish collection, and engagement. Play now to qualify!",
+  },
 ];
 
 function FAQItem({ item, isOpen, onClick }: { item: FAQItem; isOpen: boolean; onClick: () => void }) {

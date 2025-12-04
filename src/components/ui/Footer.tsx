@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="relative z-10 border-t border-white/5 bg-black/20 backdrop-blur-sm">
-      <div className="container mx-auto flex items-center justify-between px-4 py-4 sm:px-6 lg:max-w-5xl">
+    <footer className="relative z-10 border-t border-white/5 bg-black/30 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]">
+      <div className="container mx-auto flex items-center justify-between px-4 py-3 sm:py-4 sm:px-6 lg:max-w-5xl">
         <p className="text-xs text-slate-500">
           © 2025 FryReef
         </p>
@@ -20,7 +20,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="text-sm text-slate-400 transition hover:text-white"
           >
-            Roadmap
+            Whitepaper
           </a>
           <a
             href="https://x.com/iwbamwc"

@@ -52,7 +52,7 @@ function FishCard({ tokenId, rarity, pendingDust, onLayEgg, isLoading, canLayEgg
       <div className="relative text-center">
         {/* Rarity badge */}
         <div
-          className="mb-1 inline-block rounded-full px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-[10px] font-bold uppercase tracking-wider"
+          className="mb-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
           style={{
             backgroundColor: `${config.color}20`,
             color: config.color,
@@ -61,17 +61,17 @@ function FishCard({ tokenId, rarity, pendingDust, onLayEgg, isLoading, canLayEgg
           {config.name}
         </div>
 
-        <p className="text-[10px] sm:text-xs text-slate-500">#{tokenId}</p>
+        <p className="text-xs text-slate-500">#{tokenId}</p>
 
         {/* Dust production */}
-        <div className="mt-1 sm:mt-2 flex items-center justify-center gap-1 text-[10px] sm:text-xs text-slate-400">
+        <div className="mt-1 sm:mt-2 flex items-center justify-center gap-1 text-xs text-slate-400">
           <span>✨</span>
           <span>{dustPerDay}/day</span>
         </div>
 
         {/* Pending dust */}
         {pendingDust > 0 && (
-          <div className="mt-1 text-xs sm:text-sm font-medium text-amber-400">
+          <div className="mt-1 text-sm font-medium text-amber-400">
             +{pendingDust} ✨
           </div>
         )}
@@ -80,7 +80,7 @@ function FishCard({ tokenId, rarity, pendingDust, onLayEgg, isLoading, canLayEgg
         <button
           onClick={() => onLayEgg(tokenId)}
           disabled={isLoading || !canLayEgg}
-          className="mt-2 sm:mt-3 w-full cursor-pointer rounded-lg bg-purple-500/80 px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:bg-slate-600"
+          className="mt-2 w-full cursor-pointer rounded-lg bg-purple-500/80 px-3 py-2 text-xs font-medium text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:bg-slate-600"
           title={!canLayEgg ? `Need ${EGG_LAYING.spawnDustCost} Spawn Dust` : "Create a new egg"}
         >
           {isLoading ? "..." : `Lay Egg (${EGG_LAYING.spawnDustCost} ✨)`}
@@ -127,9 +127,9 @@ export function ReefTab() {
       {/* Header */}
       <div className="mb-3 sm:mb-4 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 sm:gap-3">
-          <h2 className="text-base sm:text-lg font-semibold text-white">Reef</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-white">Reef</h2>
           {fishCount > 0 && (
-            <span className="rounded-full bg-white/10 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-xs font-medium text-slate-300">
+            <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-slate-300">
               {fishCount} fish
             </span>
           )}
@@ -140,15 +140,14 @@ export function ReefTab() {
           <button
             onClick={handleCollectAll}
             disabled={isWriting}
-            className="flex cursor-pointer items-center gap-1.5 sm:gap-2 rounded-full bg-amber-500/80 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white shadow-lg transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:bg-slate-600"
+            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-amber-500/80 px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white shadow-lg transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:bg-slate-600"
           >
             {isWriting ? (
               "..."
             ) : (
               <>
-                <span className="hidden sm:inline">Collect All</span>
-                <span className="sm:hidden">Collect</span>
-                <span className="rounded-full bg-white/20 px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs">
+                <span>Collect</span>
+                <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] sm:text-xs">
                   +{totalPendingDust} ✨
                 </span>
               </>
@@ -168,13 +167,13 @@ export function ReefTab() {
             <Image
               src="/images/common/coral.webp"
               alt="Coral"
-              width={120}
-              height={120}
-              className="object-contain opacity-50 sm:w-[180px] sm:h-[180px]"
+              width={140}
+              height={140}
+              className="object-contain opacity-50"
             />
           </div>
-          <h3 className="mb-1 sm:mb-2 text-sm sm:text-base font-medium text-white">No Fish Yet</h3>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <h3 className="mb-1 sm:mb-2 text-base sm:text-lg font-medium text-white">No Fish Yet</h3>
+          <p className="text-sm text-slate-400">
             Hatch eggs in the Nest to get your first fish!
           </p>
         </div>
@@ -196,7 +195,7 @@ export function ReefTab() {
 
       {/* Info footer */}
       {fishCount > 0 && (
-        <div className="mt-3 sm:mt-4 rounded-lg bg-white/5 p-2.5 sm:p-3 text-[10px] sm:text-xs text-slate-400">
+        <div className="mt-3 sm:mt-4 rounded-lg bg-white/5 p-3 text-xs text-slate-400">
           <p>💡 Fish generate Spawn Dust daily. Collect dust and use {EGG_LAYING.spawnDustCost} ✨ to lay a new egg!</p>
         </div>
       )}
