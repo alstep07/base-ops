@@ -86,7 +86,7 @@ export function GameDashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`cursor-pointer rounded-full pl-3 pr-4 py-2 text-sm font-medium transition ${activeTab === tab.id
+              className={`cursor-pointer min-w-24 rounded-full pl-3 pr-4 py-2 text-sm font-medium transition ${activeTab === tab.id
                 ? "bg-baseBlue text-white shadow-lg"
                 : "text-slate-400 hover:text-white"
                 }`}

@@ -160,7 +160,7 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
                 timeLeft <= 0 ? "bg-green-500 hover:bg-green-400" : "bg-slate-600"
               }`}
             >
-              {isLoading ? "..." : "Hatch 🐣"}
+              {isLoading ? "..." : "Hatch"}
             </button>
           </>
         )}
