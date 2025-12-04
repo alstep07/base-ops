@@ -6,14 +6,14 @@ export function WalletConnectPrompt() {
   return (
     <div className="flex flex-col items-center">
       <Image
-        src="/images/fish/common.webp"
+        src="/images/common/coral.webp"
         alt="Connect wallet"
-        width={180}
-        height={180}
+        width={200}
+        height={200}
         className="w-48 h-48 sm:w-60 sm:h-60 object-contain"
         priority
       />
-      <p className="text-center text-md text-slate-200 max-w-md">
+      <p className="mt-8 text-center text-xl text-slate-400 max-w-md">
         Connect wallet to start your underwater adventure
       </p>
     </div>
