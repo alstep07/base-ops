@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { GameDashboard } from "@/components/features/game/GameDashboard";
 import { WalletHeader } from "@/components/features/wallet/WalletHeader";
 import { WalletConnectPrompt } from "@/components/features/wallet/WalletConnectPrompt";
+import { MobileResourceBar } from "@/components/features/wallet/MobileResourceBar";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { BubbleAnimation } from "@/components/ui/BubbleAnimation";
 import { Footer } from "@/components/ui/Footer";
@@ -39,7 +40,8 @@ export default function Home() {
           description="Breed, merge, evolve on Base"
           action={<WalletHeader />}
         />
-        <section className="flex flex-1 items-start justify-center pt-8 pb-10">
+        <MobileResourceBar />
+        <section className={`flex flex-1 justify-center pt-6 sm:pt-8 pb-10 ${isConnected ? "items-start" : "items-center"}`}>
           {isLoading ? (
             <div className="flex items-center justify-center">
               <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-baseBlue" />
