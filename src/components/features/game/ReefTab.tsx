@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import { useFish } from "@/hooks/useFish";
 import { useFryReef } from "@/hooks/useFryReef";
@@ -16,38 +16,19 @@ const rarityMap: Record<number, Rarity> = {
   [FishRarity.Mythic]: Rarity.Mythic,
 };
 
-const SECONDS_PER_DAY = 86400;
-
 interface FishCardProps {
   tokenId: number;
   rarity: Rarity;
-  mintedAt: bigint;
+  pendingDust: number;
   onLayEgg: (tokenId: number) => void;
   isLoading: boolean;
   canLayEgg: boolean;
 }
 
-function FishCard({ tokenId, rarity, mintedAt, onLayEgg, isLoading, canLayEgg }: FishCardProps) {
+function FishCard({ tokenId, rarity, pendingDust, onLayEgg, isLoading, canLayEgg }: FishCardProps) {
   const config = RARITY_CONFIG[rarity];
   const fishImage = getFishImage(rarity);
   const dustPerDay = config.spawnDustPerDay;
-
-  // Calculate total produced dust (updates every minute)
-  const [totalProduced, setTotalProduced] = useState(0);
-
-  useEffect(() => {
-    const calculateProduced = () => {
-      const mintedAtSeconds = Number(mintedAt);
-      const nowSeconds = Math.floor(Date.now() / 1000);
-      const elapsedSeconds = nowSeconds - mintedAtSeconds;
-      const produced = Math.floor((dustPerDay * elapsedSeconds) / SECONDS_PER_DAY);
-      setTotalProduced(produced);
-    };
-
-    calculateProduced();
-    const interval = setInterval(calculateProduced, 60000); // Update every minute
-    return () => clearInterval(interval);
-  }, [mintedAt, dustPerDay]);
 
   return (
     <div className="group relative rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4 backdrop-blur-sm">
@@ -86,8 +67,12 @@ function FishCard({ tokenId, rarity, mintedAt, onLayEgg, isLoading, canLayEgg }:
         {/* Dust stats */}
         <div className="mt-1 sm:mt-2 flex items-center justify-center gap-2 text-xs text-slate-400">
           <span>✨ {dustPerDay}/day</span>
-          <span className="text-slate-600">•</span>
-          <span className="text-amber-400/80">{totalProduced} total</span>
+          {pendingDust > 0 && (
+            <>
+              <span className="text-slate-600">•</span>
+              <span className="text-amber-400/80">+{pendingDust}</span>
+            </>
+          )}
         </div>
 
         {/* Lay Egg button */}
@@ -195,7 +180,7 @@ export function ReefTab() {
               key={f.tokenId}
               tokenId={f.tokenId}
               rarity={rarityMap[f.info.rarity] || Rarity.Common}
-              mintedAt={f.info.mintedAt}
+              pendingDust={f.pendingDust}
               onLayEgg={handleLayEgg}
               isLoading={isWriting}
               canLayEgg={canLayEgg}
