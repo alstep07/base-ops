@@ -72,6 +72,9 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
 
   return (
     <div className={`group relative rounded-xl sm:rounded-2xl border p-3 sm:p-4 backdrop-blur-sm ${getStatusStyle()}`}>
+      {/* Token ID - top right */}
+      <span className="absolute top-3 right-3 rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] text-slate-400">#{tokenId}</span>
+
       {/* Status badge */}
       {isReadyToHatch && (
         <div className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-lg">
@@ -134,8 +137,6 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
 
       {/* Egg Info */}
       <div className="text-center">
-        <p className="text-xs font-medium text-slate-400">#{tokenId}</p>
-
         {!info.isIncubating ? (
           <button
             onClick={() => onIncubate(tokenId)}

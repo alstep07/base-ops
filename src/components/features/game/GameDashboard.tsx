@@ -76,7 +76,7 @@ export function GameDashboard() {
   const tabs = [
     { id: "checkin" as Tab, label: "Tasks", icon: "📅" },
     { id: "nest" as Tab, label: "Nest", icon: "🟠" },
-    { id: "reef" as Tab, label: "Reef", icon: "🪸" },
+    { id: "reef" as Tab, label: "Reef", icon: "🐟" },
   ];
 
   return (
