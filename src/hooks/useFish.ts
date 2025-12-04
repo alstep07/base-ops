@@ -38,7 +38,7 @@ export function useFish() {
     },
   });
 
-  // Get total pending spawn dust for user
+  // Get total pending spawn dust for user (auto-refresh every 60s)
   const {
     data: totalPendingDust,
     isLoading: isLoadingPendingDust,
@@ -51,6 +51,7 @@ export function useFish() {
     chainId: baseSepolia.id,
     query: {
       enabled: !!address && !!fryReefAddress,
+      refetchInterval: 60000, // Refetch every 60 seconds
     },
   });
 
@@ -84,6 +85,7 @@ export function useFish() {
     },
   });
 
+  // Get pending dust per fish (auto-refresh every 60s)
   const {
     data: pendingDustResults,
     isLoading: isLoadingDust,
@@ -92,6 +94,7 @@ export function useFish() {
     contracts: pendingDustContracts,
     query: {
       enabled: fishIdsArray.length > 0 && !!contractAddress,
+      refetchInterval: 60000, // Refetch every 60 seconds
     },
   });
 

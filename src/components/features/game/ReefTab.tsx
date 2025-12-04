@@ -43,7 +43,7 @@ function FishCard({ tokenId, rarity, pendingDust, onLayEgg, isLoading, canLayEgg
 
       {/* Pending dust - top right with floating animation */}
       {pendingDust > 0 && (
-        <span className="absolute top-3.5 right-3 animate-float rounded-full px-1.5 py-0.5 text-[10px] font-medium text-amber-400">
+        <span className="absolute top-3 right-3 animate-float rounded-full px-1.5 py-1 text-[10px] font-medium text-amber-400">
           +{pendingDust} ✨
         </span>
       )}
@@ -141,7 +141,7 @@ export function ReefTab() {
           disabled={isWriting || totalPendingDust === 0}
           className={`flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs font-medium text-white transition ${
             totalPendingDust > 0
-              ? "cursor-pointer bg-amber-500/80 hover:bg-amber-500"
+              ? "cursor-pointer bg-amber-500/50 hover:bg-amber-500/80"
               : "pointer-events-none invisible"
           } disabled:cursor-not-allowed disabled:bg-slate-600`}
         >
