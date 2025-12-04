@@ -100,18 +100,18 @@ export function GameDashboard() {
       )}
 
       {/* Tabs */}
-      <div className="flex justify-center">
-        <div className="inline-flex rounded-full bg-white/5 p-1 sm:p-1.5 backdrop-blur-sm">
+      <div className="flex justify-center w-full">
+        <div className="flex w-full sm:inline-flex sm:w-auto rounded-full bg-white/5 p-1 sm:p-1.5 backdrop-blur-sm">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`cursor-pointer rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition ${activeTab === tab.id
+              className={`flex-1 sm:flex-initial cursor-pointer rounded-full px-4 sm:px-5 py-2.5 sm:py-2 text-sm font-medium transition ${activeTab === tab.id
                 ? "bg-baseBlue text-white shadow-lg"
                 : "text-slate-400 hover:text-white"
                 }`}
             >
-              <span className="mr-1 sm:mr-1.5">{tab.icon}</span>
+              <span className="mr-1.5">{tab.icon}</span>
               {tab.label}
             </button>
           ))}
@@ -121,9 +121,9 @@ export function GameDashboard() {
       {/* Tab Content */}
       {activeTab === "checkin" && (
         <div className="rounded-2xl border border-white/5 bg-white/5 p-4 sm:p-6 backdrop-blur-sm">
-          <h2 className="mb-3 sm:mb-4 text-base sm:text-lg font-semibold text-white">Daily Check-in</h2>
+          <h2 className="mb-3 sm:mb-4 text-lg sm:text-xl font-semibold text-white">Daily Check-in</h2>
 
-          <div className="mb-3 sm:mb-4 space-y-2 text-xs sm:text-sm">
+          <div className="mb-3 sm:mb-4 space-y-2 text-sm">
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Current Streak:</span>
               <span className="font-semibold text-white">
@@ -145,7 +145,7 @@ export function GameDashboard() {
                     }}
                   />
                 </div>
-                <p className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs text-slate-400">
+                <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-slate-400">
                   {currentStreak % DAILY_CHECKIN.streakForReward === 0
                     ? "🎉 Claim your Pearl Shard!"
                     : `${DAILY_CHECKIN.streakForReward - (currentStreak % DAILY_CHECKIN.streakForReward)} days until next Pearl Shard`}

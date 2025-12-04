@@ -74,13 +74,13 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
     <div className={`group relative rounded-xl sm:rounded-2xl border p-3 sm:p-4 backdrop-blur-sm ${getStatusStyle()}`}>
       {/* Status badge */}
       {isReadyToHatch && (
-        <div className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-green-500 px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-[10px] font-bold text-white shadow-lg">
-          Ready to hatch
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-lg">
+          READY
         </div>
       )}
       {info.isIncubating && !isReadyToHatch && (
-        <div className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-baseBlue px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-[10px] font-bold text-white shadow-lg whitespace-nowrap">
-          Incubating
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-baseBlue px-2 py-0.5 text-[10px] font-bold text-white shadow-lg whitespace-nowrap">
+          INCUBATING
         </div>
       )}
 
@@ -134,33 +134,33 @@ function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardPr
 
       {/* Egg Info */}
       <div className="text-center">
-        <p className="text-[10px] sm:text-xs font-medium text-slate-400">#{tokenId}</p>
+        <p className="text-xs font-medium text-slate-400">#{tokenId}</p>
 
         {!info.isIncubating ? (
           <button
             onClick={() => onIncubate(tokenId)}
             disabled={isLoading || pearlShards < INCUBATION.pearlShardCost}
-            className="mt-1.5 sm:mt-2 w-full cursor-pointer rounded-lg bg-baseBlue/80 px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium text-white transition hover:bg-baseBlue disabled:cursor-not-allowed disabled:bg-slate-600"
+            className="mt-2 w-full cursor-pointer rounded-lg bg-baseBlue/80 px-3 py-2 text-xs font-medium text-white transition hover:bg-baseBlue disabled:cursor-not-allowed disabled:bg-slate-600"
           >
             {pearlShards < INCUBATION.pearlShardCost
-              ? `Need ${INCUBATION.pearlShardCost} 💎`
+              ? `Need ${INCUBATION.pearlShardCost} 🫧`
               : isLoading
                 ? "..."
-                : `Incubate (${INCUBATION.pearlShardCost} 💎)`}
+                : `Incubate (${INCUBATION.pearlShardCost} 🫧)`}
           </button>
         ) : (
           <>
             {timeLeft > 0 && (
-              <p className="mt-1 text-[9px] sm:text-[10px] tabular-nums text-slate-400">{formatTime(timeLeft)}</p>
+              <p className="mt-1 text-[10px] tabular-nums text-slate-400">{formatTime(timeLeft)}</p>
             )}
             <button
               onClick={() => onHatch(tokenId)}
               disabled={isLoading || timeLeft > 0}
-              className={`mt-1.5 sm:mt-2 w-full cursor-pointer rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium text-white transition disabled:cursor-not-allowed disabled:bg-slate-600 ${
+              className={`mt-2 w-full cursor-pointer rounded-lg px-3 py-2 text-xs font-medium text-white transition disabled:cursor-not-allowed disabled:bg-slate-600 ${
                 timeLeft <= 0 ? "bg-green-500 hover:bg-green-400" : "bg-slate-600"
               }`}
             >
-              {isLoading ? "..." : "Hatch 🐣"}
+              {isLoading ? "..." : "Hatch"}
             </button>
           </>
         )}
@@ -292,7 +292,7 @@ export function NestTab({ onGoToReef }: NestTabProps) {
       />
       <div className="rounded-2xl border border-white/5 bg-white/5 p-4 sm:p-6 backdrop-blur-sm">
         <div className="mb-3 sm:mb-4 flex items-center justify-between">
-          <h2 className="text-base sm:text-lg font-semibold text-white">Nest</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-white">Nest</h2>
           {eggCount > 0 && (
             <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-slate-300">
               {eggCount} {eggCount === 1 ? "egg" : "eggs"}
@@ -310,13 +310,13 @@ export function NestTab({ onGoToReef }: NestTabProps) {
               <Image
                 src={EGG_IMAGE}
                 alt="Egg"
-                width={120}
-                height={120}
-                className="object-contain opacity-50 sm:w-[180px] sm:h-[180px]"
+                width={140}
+                height={140}
+                className="object-contain opacity-50"
               />
             </div>
-            <h3 className="mb-1 sm:mb-2 text-sm sm:text-base font-medium text-white">No Eggs Yet</h3>
-            <p className="text-xs sm:text-sm text-slate-400">
+            <h3 className="mb-1 sm:mb-2 text-base sm:text-lg font-medium text-white">No Eggs Yet</h3>
+            <p className="text-sm text-slate-400">
               Claim your starter pack or breed fish to get eggs!
             </p>
           </div>
