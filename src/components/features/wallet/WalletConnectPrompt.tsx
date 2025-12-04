@@ -8,12 +8,12 @@ export function WalletConnectPrompt() {
       <Image
         src="/images/fish/common.webp"
         alt="Connect wallet"
-        width={200}
-        height={200}
-        className="w-64 h-64 sm:w-80 sm:h-80 object-contain"
+        width={180}
+        height={180}
+        className="w-48 h-48 sm:w-60 sm:h-60 object-contain"
         priority
       />
-      <p className="text-center text-lg text-slate-200 max-w-md">
+      <p className="text-center text-md text-slate-200 max-w-md">
         Connect wallet to start your underwater adventure
       </p>
     </div>
