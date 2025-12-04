@@ -19,7 +19,7 @@ FryReef is an on-chain idle game built on Base Sepolia testnet. Players collect 
 
 | Resource    | Icon | Usage                      |
 | ----------- | ---- | -------------------------- |
-| Pearl Shard | 🫧    | Incubate eggs (1 per egg)  |
+| Pearl Shard | 💎    | Incubate eggs (1 per egg)  |
 | Spawn Dust  | ✨   | Lay new eggs (100 per egg) |
 
 ### Fish Production (Spawn Dust/day)
