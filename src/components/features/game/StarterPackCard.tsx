@@ -20,17 +20,17 @@ export function StarterPackCard({
   return (
     <CardShell>
       <div className="flex flex-col items-center text-center">
-        <div className="mb-4 text-6xl">🎁</div>
-        <h2 className="mb-2 text-2xl font-bold text-white">Welcome to FryReef!</h2>
-        <p className="mb-6 text-slate-400">
+        <div className="mb-3 sm:mb-4 text-5xl sm:text-6xl">🎁</div>
+        <h2 className="mb-1.5 sm:mb-2 text-xl sm:text-2xl font-bold text-white">Welcome to FryReef!</h2>
+        <p className="mb-4 sm:mb-6 text-xs sm:text-base text-slate-400">
           Claim your starter pack to begin your journey
         </p>
 
-        <div className="mb-6 w-full rounded-xl bg-white/5 p-4">
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-300">
+        <div className="mb-4 sm:mb-6 w-full rounded-xl bg-white/5 p-3 sm:p-4">
+          <h3 className="mb-2 sm:mb-3 text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-300">
             Starter Pack Contains:
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
             <div className="flex items-center justify-between">
               <span className="text-slate-400">🟠 Egg</span>
               <span className="font-semibold text-white">×{STARTER_PACK.eggs}</span>
@@ -55,13 +55,13 @@ export function StarterPackCard({
         </Button>
 
         {error && (
-          <p className="mt-4 text-sm text-red-400">
+          <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-red-400">
             Failed to claim. Please try again.
           </p>
         )}
 
         {isSuccess && (
-          <p className="mt-4 text-sm text-green-400">
+          <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-green-400">
             ✓ Starter pack claimed successfully!
           </p>
         )}

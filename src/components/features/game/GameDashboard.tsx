@@ -80,19 +80,19 @@ export function GameDashboard() {
   ];
 
   return (
-    <div className="w-full max-w-2xl space-y-6">
+    <div className="w-full max-w-2xl space-y-4 sm:space-y-6">
       {/* Network warning */}
       {!isOnCorrectNetwork && (
-        <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4 text-center">
-          <p className="mb-2 text-sm font-medium text-yellow-400">
+        <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3 sm:p-4 text-center">
+          <p className="mb-1.5 sm:mb-2 text-xs sm:text-sm font-medium text-yellow-400">
             ⚠️ Wrong Network
           </p>
-          <p className="mb-3 text-xs text-yellow-300/80">
+          <p className="mb-2 sm:mb-3 text-[10px] sm:text-xs text-yellow-300/80">
             Please switch to Base Sepolia to play.
           </p>
           <button
             onClick={switchToBaseSepolia}
-            className="cursor-pointer rounded-full bg-yellow-500/20 px-4 py-2 text-xs font-medium text-yellow-300 transition hover:bg-yellow-500/30"
+            className="cursor-pointer rounded-full bg-yellow-500/20 px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium text-yellow-300 transition hover:bg-yellow-500/30"
           >
             Switch to Base Sepolia
           </button>
@@ -101,17 +101,17 @@ export function GameDashboard() {
 
       {/* Tabs */}
       <div className="flex justify-center">
-        <div className="inline-flex rounded-full bg-white/5 p-1.5 backdrop-blur-sm">
+        <div className="inline-flex rounded-full bg-white/5 p-1 sm:p-1.5 backdrop-blur-sm">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`cursor-pointer min-w-24 rounded-full pl-3 pr-4 py-2 text-sm font-medium transition ${activeTab === tab.id
+              className={`cursor-pointer rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition ${activeTab === tab.id
                 ? "bg-baseBlue text-white shadow-lg"
                 : "text-slate-400 hover:text-white"
                 }`}
             >
-              <span className="mr-1.5">{tab.icon}</span>
+              <span className="mr-1 sm:mr-1.5">{tab.icon}</span>
               {tab.label}
             </button>
           ))}
@@ -120,10 +120,10 @@ export function GameDashboard() {
 
       {/* Tab Content */}
       {activeTab === "checkin" && (
-        <div className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm">
-          <h2 className="mb-4 text-lg font-semibold text-white">Daily Check-in</h2>
+        <div className="rounded-2xl border border-white/5 bg-white/5 p-4 sm:p-6 backdrop-blur-sm">
+          <h2 className="mb-3 sm:mb-4 text-base sm:text-lg font-semibold text-white">Daily Check-in</h2>
 
-          <div className="mb-4 space-y-2 text-sm">
+          <div className="mb-3 sm:mb-4 space-y-2 text-xs sm:text-sm">
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Current Streak:</span>
               <span className="font-semibold text-white">
@@ -136,7 +136,7 @@ export function GameDashboard() {
             </div>
             {currentStreak > 0 && (
               <div className="mt-2">
-                <div className="h-2 overflow-hidden rounded-full bg-white/10">
+                <div className="h-1.5 sm:h-2 overflow-hidden rounded-full bg-white/10">
                   <div
                     className="h-full transition-all"
                     style={{
@@ -145,7 +145,7 @@ export function GameDashboard() {
                     }}
                   />
                 </div>
-                <p className="mt-2 text-xs text-slate-400">
+                <p className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs text-slate-400">
                   {currentStreak % DAILY_CHECKIN.streakForReward === 0
                     ? "🎉 Claim your Pearl Shard!"
                     : `${DAILY_CHECKIN.streakForReward - (currentStreak % DAILY_CHECKIN.streakForReward)} days until next Pearl Shard`}
@@ -158,7 +158,7 @@ export function GameDashboard() {
             <button
               onClick={checkIn}
               disabled={checkedInToday || isWriting || isLoading || !isOnCorrectNetwork}
-              className="cursor-pointer rounded-full bg-baseBlue px-6 py-2.5 font-medium text-white shadow-lg transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:bg-slate-600 disabled:shadow-none"
+              className="cursor-pointer rounded-full bg-baseBlue px-5 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base font-medium text-white shadow-lg transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:bg-slate-600 disabled:shadow-none"
             >
               {checkedInToday
                 ? "✓ Checked in today"
@@ -169,7 +169,7 @@ export function GameDashboard() {
           </div>
 
           {error && (
-            <p className="mt-3 text-center text-xs text-red-400">
+            <p className="mt-2 sm:mt-3 text-center text-[10px] sm:text-xs text-red-400">
               Transaction failed. Please try again.
             </p>
           )}

@@ -26,14 +26,14 @@ export function WalletHeader() {
   const showBalancePanel = isConnected && !isConnecting && !isReconnecting;
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 sm:gap-3">
       {/* Combined balance & resources panel */}
       {showBalancePanel && (
-        <div className="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3 backdrop-blur-sm min-w-[100px]">
+        <div className="flex items-center gap-2 sm:gap-3 rounded-xl bg-white/5 px-2.5 py-2 sm:px-4 sm:py-3 backdrop-blur-sm">
           {/* ETH Balance */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-sm">⟠</span>
-            <span className="font-[family-name:var(--font-geist-mono)] text-sm font-medium text-white tabular-nums">
+          <div className="flex items-center gap-1">
+            <span className="text-xs sm:text-sm">⟠</span>
+            <span className="font-mono text-xs sm:text-sm font-medium text-white tabular-nums">
               {isBalanceLoading ? "-.--" : ethBalance}
             </span>
           </div>
@@ -41,14 +41,14 @@ export function WalletHeader() {
           {/* Divider & Resources - only show after starter pack claimed */}
           {starterPackClaimed && !isLoading && (
             <>
-              <div className="h-4 w-px bg-white/20" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm">{RESOURCE_CONFIG[Resource.PearlShard].icon}</span>
-                <span className="font-[family-name:var(--font-geist-mono)] text-sm font-medium text-white tabular-nums">{pearlShards}</span>
+              <div className="h-3 sm:h-4 w-px bg-white/20" />
+              <div className="flex items-center gap-1">
+                <span className="text-xs sm:text-sm">{RESOURCE_CONFIG[Resource.PearlShard].icon}</span>
+                <span className="font-mono text-xs sm:text-sm font-medium text-white tabular-nums">{pearlShards}</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm">{RESOURCE_CONFIG[Resource.SpawnDust].icon}</span>
-                <span className="font-[family-name:var(--font-geist-mono)] text-sm font-medium text-white tabular-nums">{spawnDust}</span>
+              <div className="flex items-center gap-1">
+                <span className="text-xs sm:text-sm">{RESOURCE_CONFIG[Resource.SpawnDust].icon}</span>
+                <span className="font-mono text-xs sm:text-sm font-medium text-white tabular-nums">{spawnDust}</span>
               </div>
             </>
           )}
@@ -59,6 +59,7 @@ export function WalletHeader() {
       <ConnectButton
         showBalance={false}
         chainStatus="none"
+        accountStatus={{ smallScreen: "avatar", largeScreen: "full" }}
       />
     </div>
   );

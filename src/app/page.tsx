@@ -31,7 +31,7 @@ export default function Home() {
   const isLoading = showLoader && (isConnecting || isReconnecting);
 
   return (
-    <div className="relative flex min-h-screen flex-col text-slate-100 overflow-hidden">
+    <div className="relative flex min-h-screen min-h-[-webkit-fill-available] flex-col text-slate-100 overflow-hidden">
       <BubbleAnimation />
       <main className="relative z-10 container mx-auto flex flex-1 flex-col px-4 py-6 sm:px-6 sm:py-10 lg:max-w-5xl">
         <PageHeader
