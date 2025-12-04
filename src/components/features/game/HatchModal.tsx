@@ -42,26 +42,26 @@ export function HatchModal({ isOpen, rarity, fishId, onClose, onGoToReef }: Hatc
       />
 
       {/* Modal */}
-      <div className="relative z-10 mx-4 w-full max-w-sm animate-[scaleIn_0.3s_ease-out] rounded-2xl border border-white/10 bg-gradient-to-b from-slate-800/90 to-slate-900/90 p-6 text-center shadow-2xl backdrop-blur-md">
+      <div className="relative z-10 mx-4 w-full max-w-xs sm:max-w-sm animate-[scaleIn_0.3s_ease-out] rounded-2xl border border-white/10 bg-gradient-to-b from-slate-800/90 to-slate-900/90 p-4 sm:p-6 text-center shadow-2xl backdrop-blur-md">
         {/* Confetti effect for rare+ */}
         {rarity !== Rarity.Common && (
           <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-            <div className="absolute -top-4 left-1/2 h-32 w-32 -translate-x-1/2 animate-pulse rounded-full blur-3xl"
+            <div className="absolute -top-4 left-1/2 h-24 w-24 sm:h-32 sm:w-32 -translate-x-1/2 animate-pulse rounded-full blur-3xl"
               style={{ backgroundColor: `${config.color}40` }}
             />
           </div>
         )}
 
         {/* Title */}
-        <h2 className="mb-2 text-2xl font-bold text-white">
+        <h2 className="mb-1.5 sm:mb-2 text-xl sm:text-2xl font-bold text-white">
           🎉 Congratulations!
         </h2>
-        <p className="mb-6 text-sm text-slate-400">
+        <p className="mb-4 sm:mb-6 text-xs sm:text-sm text-slate-400">
           Your egg has hatched into a new fish!
         </p>
 
         {/* Fish Image */}
-        <div className="relative mx-auto mb-4 h-40 w-40">
+        <div className="relative mx-auto mb-3 sm:mb-4 h-28 w-28 sm:h-40 sm:w-40">
           {/* Glow */}
           <div
             className="absolute inset-0 animate-pulse rounded-full blur-2xl"
@@ -77,7 +77,7 @@ export function HatchModal({ isOpen, rarity, fishId, onClose, onGoToReef }: Hatc
 
         {/* Rarity Badge */}
         <div
-          className="mb-2 inline-block rounded-full px-4 py-1.5 text-sm font-bold uppercase tracking-wider"
+          className="mb-1.5 sm:mb-2 inline-block rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider"
           style={{
             backgroundColor: `${config.color}20`,
             color: config.color,
@@ -89,20 +89,20 @@ export function HatchModal({ isOpen, rarity, fishId, onClose, onGoToReef }: Hatc
 
         {/* Fish ID */}
         {fishId !== null && (
-          <p className="mb-6 text-xs text-slate-500">Fish #{fishId}</p>
+          <p className="mb-4 sm:mb-6 text-[10px] sm:text-xs text-slate-500">Fish #{fishId}</p>
         )}
 
         {/* Actions */}
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-3">
           <button
             onClick={onClose}
-            className="flex-1 cursor-pointer rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/10"
+            className="flex-1 cursor-pointer rounded-xl border border-white/10 bg-white/5 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-slate-300 transition hover:bg-white/10"
           >
             Stay Here
           </button>
           <button
             onClick={onGoToReef}
-            className="flex-1 cursor-pointer rounded-xl bg-baseBlue px-4 py-3 text-sm font-medium text-white shadow-lg transition hover:bg-baseBlue/80"
+            className="flex-1 cursor-pointer rounded-xl bg-baseBlue px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-white shadow-lg transition hover:bg-baseBlue/80"
           >
             Go to Reef 🐠
           </button>

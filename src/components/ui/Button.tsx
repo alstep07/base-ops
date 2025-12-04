@@ -16,7 +16,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "relative inline-flex min-w-[160px] items-center justify-center overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100";
+    "relative inline-flex min-w-[140px] sm:min-w-[160px] items-center justify-center overflow-hidden rounded-full px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-white shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100";
 
   const variantClasses = {
     primary:

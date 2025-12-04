@@ -19,7 +19,7 @@ export function CardShell({ children, className = "" }: CardShellProps) {
       {/* clean border glow */}
       <div className="pointer-events-none absolute inset-0 rounded-2xl border border-white/3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]" />
       {/* content */}
-      <div className="relative z-10 flex flex-col h-full p-6 sm:p-8">{children}</div>
+      <div className="relative z-10 flex flex-col h-full p-4 sm:p-6 md:p-8">{children}</div>
     </section>
   );
 }
