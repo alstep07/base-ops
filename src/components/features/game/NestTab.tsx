@@ -21,24 +21,33 @@ interface EggCardProps {
 function EggCard({ egg, onIncubate, onHatch, isLoading, pearlShards }: EggCardProps) {
   const { tokenId, info } = egg;
 
-  // Calculate time remaining and progress
-  const calculateTimeAndProgress = () => {
+  // Initialize with safe values to avoid hydration mismatch
+  const [{ timeLeft, progress }, setTimeData] = useState(() => {
+    // On server or initial render, use safe default
     if (!info.isIncubating) return { timeLeft: 0, progress: 0 };
-    const elapsed = Date.now() / 1000 - Number(info.incubationStartedAt);
-    const total = INCUBATION.durationSeconds;
-    const timeLeft = Math.max(0, total - elapsed);
-    const progress = Math.min(100, (elapsed / total) * 100);
-    return { timeLeft, progress };
-  };
+    // For incubating eggs, start with full time (will be calculated in useEffect)
+    return { timeLeft: INCUBATION.durationSeconds, progress: 0 };
+  });
 
-  const [{ timeLeft, progress }, setTimeData] = useState(() => calculateTimeAndProgress());
-
-  // Update every second when incubating
+  // Update every second when incubating (only runs on client)
   useEffect(() => {
     if (!info.isIncubating) {
       setTimeData({ timeLeft: 0, progress: 0 });
       return;
     }
+
+    // Calculate time remaining and progress
+    const calculateTimeAndProgress = () => {
+      const startedAt = Number(info.incubationStartedAt);
+      if (startedAt === 0) {
+        return { timeLeft: INCUBATION.durationSeconds, progress: 0 };
+      }
+      const elapsed = Date.now() / 1000 - startedAt;
+      const total = INCUBATION.durationSeconds;
+      const timeLeft = Math.max(0, total - elapsed);
+      const progress = Math.min(100, (elapsed / total) * 100);
+      return { timeLeft, progress };
+    };
 
     // Initial calculation
     setTimeData(calculateTimeAndProgress());
@@ -326,12 +335,11 @@ export function NestTab({ onGoToReef }: NestTabProps) {
               <Image
                 src={EGG_IMAGE}
                 alt="Egg"
-                width={160}
-                height={160}
+                width={120}
+                height={120}
                 className="object-contain opacity-50"
               />
             </div>
-            <h3 className="mb-1 sm:mb-2 text-base sm:text-lg font-medium text-white">No Eggs Yet</h3>
             <p className="text-sm text-slate-400">
               Claim your starter pack or breed fish to get eggs!
             </p>
